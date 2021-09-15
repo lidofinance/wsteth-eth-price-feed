@@ -38,7 +38,7 @@ contract WstETH2ETHPriceFeed is IChainlinkAggregator {
         if (stETH2ETH > 0) {
             return int256(uint256(stETH2ETH) / _wstETH.stEthPerToken());
         } else {
-            return stETHToETH;
+            return stETH2ETH;
         }
     }
 }
