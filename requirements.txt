@@ -1,0 +1,2 @@
+eth-brownie==1.16.3
+pytest==6.2.5
