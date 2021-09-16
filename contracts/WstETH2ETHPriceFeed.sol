@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.6.6;
+pragma solidity 0.8.7;
 
 interface IWstETH {
     /**
@@ -31,19 +31,6 @@ contract WstETH2ETHPriceFeed is IChainlinkAggregator {
         _wstETH = IWstETH(_wstETHAddress);
     }
 
-    function mul(uint256 a, uint256 b) internal view returns (uint256) {
-        /**
-         * @notice Multiply with overflow checking
-         */
-        if (a == 0) {
-            return 0;
-        }
-
-        uint256 c = a * b;
-        assert(c / a == b);
-        return c;
-    }
-
     function latestAnswer() external view override returns (int256) {
         /**
          * @notice Get amount of wstETH for a one ETH
@@ -51,8 +38,8 @@ contract WstETH2ETHPriceFeed is IChainlinkAggregator {
         int256 stETH2ETH = _stETH2ETHPriceFeed.latestAnswer();
 
         if (stETH2ETH > 0) {
-            int256 wstETH2ETH = int256(mul(
-                uint256(stETH2ETH), multiplier
+            int256 wstETH2ETH = int256((
+            uint256(stETH2ETH) * multiplier
             ) / _wstETH.stEthPerToken());
             assert(wstETH2ETH > 0);
             return wstETH2ETH;
