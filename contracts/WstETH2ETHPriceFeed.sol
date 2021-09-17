@@ -21,7 +21,7 @@ contract WstETH2ETHPriceFeed is IChainlinkAggregator {
     IWstETH internal immutable wstETH;
     IChainlinkAggregator internal immutable stETH2ETHPriceFeed;
 
-    uint256 internal constant MULTIPLIER = 10 ** 18;
+    int256 internal constant MULTIPLIER = 10 ** 18;
 
     constructor(
         address _stETH2ETHPriceFeed,
@@ -35,14 +35,10 @@ contract WstETH2ETHPriceFeed is IChainlinkAggregator {
      * @notice Get amount of wstETH for a one ETH
      */
     function latestAnswer() external view override returns (int256) {
-        int256 stETH2ETH = stETH2ETHPriceFeed.latestAnswer();
+        int256 stETH2ETH = stETH2ETHPriceFeed.latestAnswer() * MULTIPLIER;
+        int256 stETH2wstETH = int256(wstETH.stEthPerToken());
+        assert(stETH2wstETH > 0);
 
-        if (stETH2ETH > 0) {
-            int256 wstETH2ETH = int256(uint256(stETH2ETH) * MULTIPLIER / wstETH.stEthPerToken());
-            assert(wstETH2ETH > 0);
-            return wstETH2ETH;
-        } else {
-            return stETH2ETH;
-        }
+        return stETH2ETH / stETH2wstETH;
     }
 }
