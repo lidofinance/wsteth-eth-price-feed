@@ -21,6 +21,6 @@ The contract is constructed around stETH/ETH pair from the Chainlink. It impleme
 
 for compability with `IChainlinkAggregator` interface from [AaveOracle contract](0xA50ba011c48153De246E5192C8f9258A2ba79Ca9).
 
-'latestAnswer' is a wrapping for the same function from 'ChainlinkAggregator'. For values greater than zero it performs scaling by stETH/wstETH coefficient. Otherwise values from the Chainlink are returned without modification.
+'latestAnswer' is a wrapping for the same function from 'ChainlinkAggregator'. For values from the Chainlink it performs scaling by stETH/wstETH coefficient.
 
 `constructor` get addresses of a chainlink aggregator for the stETH/ETH pair and the wstETH contract.
