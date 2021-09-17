@@ -27,6 +27,9 @@ jobs:
     - name: Install Ganache
       run: npm install -g ganache-cli@6.10.2
 
+    - name: Install Solc
+      run: sudo add-apt-repository ppa:ethereum/ethereum && sudo apt-get update && sudo apt-get install solc -y
+
     - name: Setup Python 3.8
       uses: actions/setup-python@v2
       with:
