@@ -27,16 +27,25 @@ jobs:
     - name: Install Ganache
       run: npm install -g ganache-cli@6.10.2
 
+    - name: Install Solc
+      run: sudo add-apt-repository ppa:ethereum/ethereum && sudo apt-get update && sudo apt-get install solc -y
+
     - name: Setup Python 3.8
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
 
     - name: Install Requirements
-      run: pip install -r requirements.txt
+      run: pip install -r ${GITHUB_WORKSPACE}/requirements.txt
+
+    - name: Install Dev Requirements
+      run: pip install -r ${GITHUB_WORKSPACE}/tests/requirements-dev.txt
 
     - name: Add execution access
       run: chmod +x ${GITHUB_WORKSPACE}/run_tests.sh
+
+    - name: Run linter
+      run: slither ${GITHUB_WORKSPACE}/contracts --exclude solc-version
 
     - name: Run Tests
       run: ${GITHUB_WORKSPACE}/run_tests.sh $FORK_URL

@@ -7,7 +7,7 @@ import "./WstETH2ETHPriceFeed.sol";
 contract MockWstETH is IWstETH {
     uint256 immutable private stETH2WstETH;
 
-    constructor (uint256 _convCoefficient) public {
+    constructor (uint256 _convCoefficient) {
         stETH2WstETH = _convCoefficient;
     }
 

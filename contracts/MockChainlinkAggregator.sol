@@ -8,7 +8,7 @@ import "./WstETH2ETHPriceFeed.sol";
 contract MockChainlinkAggregator is IChainlinkAggregator {
     int256 immutable private stETH2ETHPriceFeed;
 
-    constructor (int256 _priceFeed) public {
+    constructor (int256 _priceFeed) {
         stETH2ETHPriceFeed = _priceFeed;
     }
 
