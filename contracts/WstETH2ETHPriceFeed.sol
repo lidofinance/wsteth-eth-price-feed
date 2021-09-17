@@ -26,7 +26,7 @@ contract WstETH2ETHPriceFeed is IChainlinkAggregator {
     constructor(
         address stETH2ETHPriceFeed,
         address wstETH
-    ) public {
+    ) {
         _stETH2ETHPriceFeed = IChainlinkAggregator(stETH2ETHPriceFeed);
         _wstETH = IWstETH(wstETH);
     }
