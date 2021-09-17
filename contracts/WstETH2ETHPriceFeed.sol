@@ -18,8 +18,8 @@ interface IChainlinkAggregator {
 }
 
 contract WstETH2ETHPriceFeed is IChainlinkAggregator {
-    IWstETH internal immutable wstETH;
-    IChainlinkAggregator internal immutable stETH2ETHPriceFeed;
+    IWstETH public immutable wstETH;
+    IChainlinkAggregator public immutable stETH2ETHPriceFeed;
 
     int256 internal constant MULTIPLIER = 10 ** 18;
 
