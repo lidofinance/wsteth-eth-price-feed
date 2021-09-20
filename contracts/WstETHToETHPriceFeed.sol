@@ -36,7 +36,7 @@ contract WstETHToETHPriceFeed is IChainlinkAggregator {
      */
     function latestAnswer() external view override returns (int256) {
         int256 wstETHToStETH = int256(wstETH.tokensPerStEth());
-        assert(stETHToWstETH > 0);
+        assert(wstETHToStETH > 0);
         int256 stETHToETH = stETHToETHPriceFeed.latestAnswer();
 
         return wstETHToStETH * stETHToETH / DECIMALS;
