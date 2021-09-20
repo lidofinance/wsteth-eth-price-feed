@@ -29,12 +29,20 @@ test_cases = [
         wstETHToETH=as_wei(-1)
     ),
     PriceFeedContext(
-        stETHToETH=as_wei(99, 2), wstETHToStETH=as_wei(33, 2),
-        wstETHToETH=as_wei(3)
+        stETHToETH=as_wei(8, 1), wstETHToStETH=as_wei(75, 2),
+        wstETHToETH=as_wei(6, 1)
     ),
     PriceFeedContext(
-        stETHToETH=as_wei(75, 2), wstETHToStETH=as_wei(125, 2),
-        wstETHToETH=as_wei(6, 1)
+        stETHToETH=as_wei(8, 1), wstETHToStETH=as_wei(125, 2),
+        wstETHToETH=as_wei(1)
+    ),
+    PriceFeedContext(
+        stETHToETH=as_wei(1, 2), wstETHToStETH=as_wei(90),
+        wstETHToETH=as_wei(9, 1)
+    ),
+    PriceFeedContext(
+        stETHToETH=as_wei(2), wstETHToStETH=as_wei(5, 3),
+        wstETHToETH=as_wei(1, 2)
     )
 ]
 
