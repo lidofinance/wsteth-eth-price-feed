@@ -8,7 +8,7 @@ from collections import namedtuple
 
 PriceFeedContext = namedtuple(
     'PriceFeedContext', [
-        'stETH2wstETH', 'stETH2ETH', 'wstETH2ETH'
+        'stETHToWstETH', 'stETHToETH', 'wstETHToETH'
     ]
 )
 
@@ -21,20 +21,20 @@ def as_wei(amount: int, decimals: int = 0) -> int:
 
 test_cases = [
     PriceFeedContext(
-        stETH2ETH=as_wei(1), stETH2wstETH=as_wei(1),
-        wstETH2ETH=as_wei(1)
+        stETHToETH=as_wei(1), stETHToWstETH=as_wei(1),
+        wstETHToETH=as_wei(1)
     ),
     PriceFeedContext(
-        stETH2ETH=as_wei(-1), stETH2wstETH=as_wei(1),
-        wstETH2ETH=as_wei(-1)
+        stETHToETH=as_wei(-1), stETHToWstETH=as_wei(1),
+        wstETHToETH=as_wei(-1)
     ),
     PriceFeedContext(
-        stETH2ETH=as_wei(99, 2), stETH2wstETH=as_wei(33, 2),
-        wstETH2ETH=as_wei(3)
+        stETHToETH=as_wei(99, 2), stETHToWstETH=as_wei(33, 2),
+        wstETHToETH=as_wei(3)
     ),
     PriceFeedContext(
-        stETH2ETH=as_wei(75, 2), stETH2wstETH=as_wei(125, 2),
-        wstETH2ETH=as_wei(6, 1)
+        stETHToETH=as_wei(75, 2), stETHToWstETH=as_wei(125, 2),
+        wstETHToETH=as_wei(6, 1)
     )
 ]
 
@@ -42,8 +42,8 @@ test_cases = [
 def get_test_name(test_case: PriceFeedContext) -> str:
     """Make a test name based on a test case description."""
     return (
-        f'stETH/ETH = {test_case.stETH2ETH}; '
-        f'stETH/wstETH = {test_case.stETH2wstETH}'
+        f'stETH/ETH = {test_case.stETHToETH}; '
+        f'stETH/wstETH = {test_case.stETHToWstETH}'
     )
 
 
@@ -54,12 +54,12 @@ def price_feed(
 ):
     """Prepare a normal price feeding case."""
     test_case: PriceFeedContext = request.param
-    chainlink_aggregator = make_fabric_chainlink_agg(test_case.stETH2ETH)
-    wsteth = make_fabric_wsteth(test_case.stETH2wstETH)
+    chainlink_aggregator = make_fabric_chainlink_agg(test_case.stETHToETH)
+    wsteth = make_fabric_wsteth(test_case.stETHToWstETH)
 
     return make_fabric_price_feed(
         chainlink_aggregator, wsteth
-    ), test_case.wstETH2ETH
+    ), test_case.wstETHToETH
 
 
 def test_price_feed(price_feed):

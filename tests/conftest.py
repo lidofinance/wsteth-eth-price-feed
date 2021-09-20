@@ -4,7 +4,7 @@ Tests configuration.
 import pytest
 
 from brownie import (
-    MockChainlinkAggregator, MockWstETH, WstETH2ETHPriceFeed  # noqa
+    MockChainlinkAggregator, MockWstETH, WstETHToETHPriceFeed  # noqa
 )
 
 
@@ -45,7 +45,7 @@ def make_fabric_price_feed(ape):
     def _make_fabric_price_feed(
             chainlink_pair_address, wsteth_address
     ):
-        return WstETH2ETHPriceFeed.deploy(
+        return WstETHToETHPriceFeed.deploy(
             chainlink_pair_address, wsteth_address,
             {'from': ape}
         )
