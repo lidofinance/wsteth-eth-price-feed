@@ -15,39 +15,21 @@ def ape(accounts):
 
 
 @pytest.fixture(scope='session')
-def make_fabric_chainlink_agg(ape):
-    """Prepare fabric for chainlink aggregator with target price."""
-
-    def _make_fabric_chainlink_agg(price_feed: int):
-        return MockChainlinkAggregator.deploy(
-            price_feed, {'from': ape}
-        )
-
-    return _make_fabric_chainlink_agg
+def chainlink_agg(ape):
+    """Prepare chainlink aggregator for stETH/ETH price feed."""
+    return MockChainlinkAggregator.deploy({'from': ape})
 
 
 @pytest.fixture(scope='session')
-def make_fabric_wsteth(ape):
-    """Prepare fabric for wstETH with target conversion coefficient."""
-
-    def _make_fabric_wsteth(conv_coef: int):
-        return MockWstETH.deploy(
-            conv_coef, {'from': ape}
-        )
-
-    return _make_fabric_wsteth
+def wsteth(ape):
+    """Prepare wstETH token."""
+    return MockWstETH.deploy({'from': ape})
 
 
 @pytest.fixture(scope='session')
-def make_fabric_price_feed(ape):
-    """Prepare fabrice for WstETH2ETHPriceFeed."""
-
-    def _make_fabric_price_feed(
-            chainlink_pair_address, wsteth_address
-    ):
-        return WstETHToETHPriceFeed.deploy(
-            chainlink_pair_address, wsteth_address,
-            {'from': ape}
-        )
-
-    return _make_fabric_price_feed
+def price_feed(ape, chainlink_agg, wsteth):
+    """Prepare WstETH2ETHPriceFeed."""
+    return WstETHToETHPriceFeed.deploy(
+        chainlink_agg, wsteth,
+        {'from': ape}
+    )
