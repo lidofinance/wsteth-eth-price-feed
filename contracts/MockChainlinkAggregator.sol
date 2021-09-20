@@ -6,10 +6,10 @@ import "./WstETHToETHPriceFeed.sol";
 
 
 contract MockChainlinkAggregator is IChainlinkAggregator {
-    int256 immutable private stETHToETHPriceFeed;
+    int256 private stETHToETHPriceFeed;
 
-    constructor (int256 _priceFeed) {
-        stETHToETHPriceFeed = _priceFeed;
+    function setPriceFeed(int256 newValue) external {
+        stETHToETHPriceFeed = newValue;
     }
 
     function latestAnswer() external view override returns (int256) {
