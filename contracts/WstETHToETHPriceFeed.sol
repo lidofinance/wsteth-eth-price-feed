@@ -7,7 +7,7 @@ interface IWstETH {
      * @notice Get amount of stETH for a one wstETH
      * @return Amount of stETH for 1 wstETH
      */
-    function stEthPerToken() external view returns (uint256);
+    function tokensPerStEth() external view returns (uint256);
 }
 
 interface IChainlinkAggregator {
@@ -21,7 +21,7 @@ contract WstETHToETHPriceFeed is IChainlinkAggregator {
     IWstETH public immutable wstETH;
     IChainlinkAggregator public immutable stETHToETHPriceFeed;
 
-    int256 internal constant MULTIPLIER = 10 ** 18;
+    int256 internal constant DECIMALS = 10 ** 18;
 
     constructor(
         address _stETHToETHPriceFeed,
@@ -35,10 +35,10 @@ contract WstETHToETHPriceFeed is IChainlinkAggregator {
      * @notice Get amount of wstETH for a one ETH
      */
     function latestAnswer() external view override returns (int256) {
-        int256 stETHToETH = stETHToETHPriceFeed.latestAnswer() * MULTIPLIER;
-        int256 stETHToWstETH = int256(wstETH.stEthPerToken());
+        int256 wstETHToStETH = int256(wstETH.tokensPerStEth());
         assert(stETHToWstETH > 0);
+        int256 stETHToETH = stETHToETHPriceFeed.latestAnswer();
 
-        return stETHToETH / stETHToWstETH;
+        return wstETHToStETH * stETHToETH / DECIMALS;
     }
 }
