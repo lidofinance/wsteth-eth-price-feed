@@ -2,16 +2,16 @@
 
 pragma solidity 0.8.7;
 
-import "./WstETH2ETHPriceFeed.sol";
+import "./WstETHToETHPriceFeed.sol";
 
 contract MockWstETH is IWstETH {
-    uint256 immutable private stETH2WstETH;
+    uint256 private wstETHToStETH;
 
-    constructor (uint256 _convCoefficient) {
-        stETH2WstETH = _convCoefficient;
+    function setTokenPerStETH(uint256 newValue) external {
+        wstETHToStETH = newValue;
     }
 
-    function stEthPerToken() external view override returns (uint256) {
-        return stETH2WstETH;
+    function tokensPerStEth() external view override returns (uint256) {
+        return wstETHToStETH;
     }
 }

@@ -2,17 +2,17 @@
 
 pragma solidity 0.8.7;
 
-import "./WstETH2ETHPriceFeed.sol";
+import "./WstETHToETHPriceFeed.sol";
 
 
 contract MockChainlinkAggregator is IChainlinkAggregator {
-    int256 immutable private stETH2ETHPriceFeed;
+    int256 private stETHToETHPriceFeed;
 
-    constructor (int256 _priceFeed) {
-        stETH2ETHPriceFeed = _priceFeed;
+    function setPriceFeed(int256 newValue) external {
+        stETHToETHPriceFeed = newValue;
     }
 
     function latestAnswer() external view override returns (int256) {
-        return stETH2ETHPriceFeed;
+        return stETHToETHPriceFeed;
     }
 }
