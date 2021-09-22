@@ -17,12 +17,13 @@ interface IChainlinkAggregator {
     function latestAnswer() external view returns (int256);
 }
 
-/// @title wstETH/ETH price feed only for integration with AAVE.
+/// @title wstETH/ETH price feed compatible with AAVE feed interface.
+/// @dev Please notice that this feed doesn't provide the complete Chainlink feed interface.
 contract AAVECompatWstETHToETHPriceFeed is IChainlinkAggregator {
     IWstETH public immutable wstETH;
     IChainlinkAggregator public immutable stETHToETHPriceFeed;
 
-    int256 internal constant DECIMALS = 10 ** 18;
+    int256 internal constant PRECISION = 10 ** 18;
 
     constructor(
         address _stETHToETHPriceFeed,
@@ -33,14 +34,14 @@ contract AAVECompatWstETHToETHPriceFeed is IChainlinkAggregator {
     }
 
     /**
-     * @notice Get wstETH/ETH price feed.
+     * @notice Get price of one wstETH expressed in ETH.
      */
     function latestAnswer() external view override returns (int256) {
         int256 wstETHToStETH = int256(wstETH.stEthPerToken());
         assert(wstETHToStETH > 0);
         int256 stETHToETH = stETHToETHPriceFeed.latestAnswer();
 
-        return wstETHToStETH * stETHToETH / DECIMALS;
+        return wstETHToStETH * stETHToETH / PRECISION;
     }
 
     /**
