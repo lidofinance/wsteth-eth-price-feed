@@ -8,7 +8,7 @@
 ### About
 
 Contains the implementation of price feed for wstETH/ETH pair. 
-Implementation is based on value of stETH/ETH from [ChainlinkAggregator](0x86392dC19c0b719886221c78AB11eb8Cf5c52812) and stETH/wstETH rate from [wstETH](0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0) contract.
+Implementation is based on value of stETH/ETH from [ChainlinkAggregator](https://etherscan.io/address/0x86392dC19c0b719886221c78AB11eb8Cf5c52812#readContract) and stETH/wstETH rate from [wstETH](https://etherscan.io/address/0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0#readContract) contract.
 Resulting value for pair is calculated as stETH/ETH value divided by stETH/wstETH rate.
 
 ### Core contracts
@@ -19,7 +19,7 @@ The contract is constructed around stETH/ETH pair from the Chainlink. It impleme
 
 ```function latestAnswer() external view returns (int256);```
 
-for compability with `IChainlinkAggregator` interface from [AaveOracle contract](0xA50ba011c48153De246E5192C8f9258A2ba79Ca9).
+for compability with `IChainlinkAggregator` interface from [AaveOracle contract](https://github.com/aave/protocol-v2/blob/master/contracts/misc/AaveOracle.sol#L91).
 
 'latestAnswer' is a wrapping for the same function from 'ChainlinkAggregator'. For values from the Chainlink it performs scaling by wstETH/stETH factor.
 
