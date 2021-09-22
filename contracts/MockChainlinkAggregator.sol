@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.7;
 
-import "./WstETHToETHPriceFeed.sol";
+import "./AAVECompatWstETHToETHPriceFeed.sol";
 
 
 contract MockChainlinkAggregator is IChainlinkAggregator {

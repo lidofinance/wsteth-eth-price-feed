@@ -7,7 +7,7 @@ interface IWstETH {
      * @notice Get amount of stETH for a one wstETH
      * @return Amount of stETH for 1 wstETH
      */
-    function tokensPerStEth() external view returns (uint256);
+    function stEthPerToken() external view returns (uint256);
 }
 
 interface IChainlinkAggregator {
