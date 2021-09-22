@@ -41,4 +41,11 @@ contract WstETHToETHPriceFeed is IChainlinkAggregator {
 
         return wstETHToStETH * stETHToETH / DECIMALS;
     }
+
+    /**
+     * @notice Revert all calls except the 'latestAnswer'
+     */
+    fallback() external {
+        revert("Unexpected function call.");
+    }
 }
