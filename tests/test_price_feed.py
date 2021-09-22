@@ -56,35 +56,50 @@ def get_test_name(test_case: PriceFeedContext) -> str:
 
 
 @pytest.fixture(scope='module', params=test_cases, ids=get_test_name)
-def expected_value(request, chainlink_agg, wsteth):
+def expected_value(request, mock_chainlink_agg, mock_wsteth):
     """Prepare a normal price feeding case."""
     test_case: PriceFeedContext = request.param
-    chainlink_agg.setPriceFeed(test_case.stETHToETH)
-    wsteth.setTokenPerStETH(test_case.wstETHToStETH)
+    mock_chainlink_agg.setPriceFeed(test_case.stETHToETH)
+    mock_wsteth.setStETHPerToken(test_case.wstETHToStETH)
 
     return test_case.wstETHToETH
 
 
-def test_price_feed(price_feed, expected_value):
+def test_price_feed(price_feed_mock_based, expected_value):
     """Tests for normal price feeding cases."""
-    assert price_feed.latestAnswer() == expected_value
+    assert price_feed_mock_based.latestAnswer() == expected_value
 
 
-def test_handle_overfloating_bug(price_feed, chainlink_agg, wsteth):
+def test_handle_overfloating_bug(
+        price_feed_mock_based, mock_chainlink_agg, mock_wsteth
+):
     """
     Test for handling of overfloating at multiplication.
 
     Overfloating should to appear only with a huge stETH/ETH coefficient.
     """
-    chainlink_agg.setPriceFeed(10 ** 70)
-    wsteth.setTokenPerStETH(10 ** 18)
+    mock_chainlink_agg.setPriceFeed(10 ** 70)
+    mock_wsteth.setStETHPerToken(10 ** 18)
     with brownie.reverts():
-        _ = price_feed.latestAnswer()
+        _ = price_feed_mock_based.latestAnswer()
 
 
-def test_handle_conversion_bug(price_feed, chainlink_agg, wsteth):
+def test_handle_conversion_bug(
+        price_feed_mock_based, mock_chainlink_agg, mock_wsteth
+):
     """Test for handling of overfloating at from uint to int conversion."""
-    chainlink_agg.setPriceFeed(10 ** 18)
-    wsteth.setTokenPerStETH(10 ** 77)
+    mock_chainlink_agg.setPriceFeed(10 ** 18)
+    mock_wsteth.setStETHPerToken(10 ** 77)
     with brownie.reverts():
-        price_feed.latestAnswer()
+        price_feed_mock_based.latestAnswer()
+
+
+def test_wsteth_steth_factor(wsteth):
+    """Test that value of wsteth more than steth"""
+    one = 10 ** 18
+    assert wsteth.stEthPerToken() >= one
+
+
+def test_live_price_feed(price_feed_live, chainlink_agg):
+    """Test that that wstETH/ETH more than stETH/ETH."""
+    assert price_feed_live.latestAnswer() > chainlink_agg.latestAnswer()
