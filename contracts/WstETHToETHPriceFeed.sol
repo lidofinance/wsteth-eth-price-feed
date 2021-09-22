@@ -17,7 +17,8 @@ interface IChainlinkAggregator {
     function latestAnswer() external view returns (int256);
 }
 
-contract WstETHToETHPriceFeed is IChainlinkAggregator {
+/// @title wstETH/ETH price feed only for integration with AAVE.
+contract AAVECompatWstETHToETHPriceFeed is IChainlinkAggregator {
     IWstETH public immutable wstETH;
     IChainlinkAggregator public immutable stETHToETHPriceFeed;
 
@@ -32,10 +33,10 @@ contract WstETHToETHPriceFeed is IChainlinkAggregator {
     }
 
     /**
-     * @notice Get amount of wstETH for a one ETH
+     * @notice Get wstETH/ETH price feed.
      */
     function latestAnswer() external view override returns (int256) {
-        int256 wstETHToStETH = int256(wstETH.tokensPerStEth());
+        int256 wstETHToStETH = int256(wstETH.stEthPerToken());
         assert(wstETHToStETH > 0);
         int256 stETHToETH = stETHToETHPriceFeed.latestAnswer();
 
